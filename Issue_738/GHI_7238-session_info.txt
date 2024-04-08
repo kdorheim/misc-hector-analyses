@@ -1,0 +1,25 @@
+R version 4.3.3 (2024-02-29)
+Platform: aarch64-apple-darwin20 (64-bit)
+Running under: macOS Sonoma 14.4.1
+
+Matrix products: default
+BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib 
+LAPACK: /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.11.0
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+time zone: America/New_York
+tzcode source: internal
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] ggplot2_3.5.0 lhs_1.1.6     hector_3.2.0 
+
+loaded via a namespace (and not attached):
+ [1] labeling_0.4.2    utf8_1.2.4        R6_2.5.1          tidyselect_1.2.0  farver_2.1.1      magrittr_2.0.3    gtable_0.3.3      glue_1.7.0       
+ [9] tibble_3.2.1      pkgconfig_2.0.3   generics_0.1.3    dplyr_1.1.4       lifecycle_1.0.4   cli_3.6.2         fansi_1.0.6       scales_1.3.0     
+[17] grid_4.3.3        vctrs_0.6.5       withr_3.0.0       compiler_4.3.3    rstudioapi_0.15.0 tools_4.3.3       pillar_1.9.0      munsell_0.5.0    
+[25] Rcpp_1.0.12       colorspace_2.1-0  rlang_1.1.3      
