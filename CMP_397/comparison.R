@@ -42,6 +42,8 @@ rslts %>%
     select(year, version, value, scenario) %>%
     spread(version, value) %>%
     mutate(dif = `3.2.0` - `3.1.1` ) %>%
+    group_by(scenario) %>%
+    summarise(value = mean(dif))
     pull(dif) %>% mean()
 
 
@@ -66,6 +68,65 @@ rslts %>%
          y = "ppbv CH4, ppmv CO2")
 
 
+
+# Parse out all of the RF variables from the function table so make it easy to
+# get all the RF values with a fetchvars call.
+hector::fxntable %>%
+    filter(grepl(x = fxn, pattern = "RF_")) %>%
+    pull(string) ->
+    rf_vars
+
+# By forcing component
+rslts %>%
+  #  filter(scenario == "ssp245") %>%
+    spread(version, value) %>%
+    mutate(dif = `3.2.0` - `3.1.1`) %>%
+    filter(grepl(x = variable, pattern = "RF_|F")) ->
+    diff_in_rf
+
+
+diff_in_rf %>%
+    group_by(variable) %>%
+    summarise(value = sum(dif)) %>%
+    filter(value == 0) %>%
+    pull(variable) ->
+    no_rf_change
+
+
+diff_in_rf %>%
+    filter(!variable %in% no_rf_change) %>%
+    group_by(variable) %>%
+    summarise(value = sum(abs(dif)))
+
+
+
+diff_in_rf %>%
+    filter(!variable %in% no_rf_change) %>%
+    ggplot(aes(year, dif, color = variable)) +
+    geom_line()
+
+
+
+diff_in_rf %>%
+    filter(variable == RF_TOTAL()) %>%
+    filter(year >= 1990) %>%
+    ggplot(aes(year, 100 * dif/`3.1.1`, color = scenario)) +
+    geom_line() +
+    labs(title = "Percent Change in RF",
+         y = "% change aka (new - old) / old")
+
+
+
+
+diff_in_rf %>%
+    filter(scenario == "ssp245") %>%
+    filter(!variable %in% no_rf_change) %>%
+    filter(variable != RF_TOTAL()) %>%
+    filter(year >= 1990) %>%
+    ggplot(aes(year, dif, color = variable)) +
+    geom_line() +
+    labs(title = "Change in RF by type for SSP245",
+         y = "v3.2.0 - v3.1.1")
 
 
 

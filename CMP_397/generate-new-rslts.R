@@ -4,9 +4,7 @@
 # to need to focus on [CO2], [CH4], global temps, & aerosol RF.
 
 # 0. Set Up --------------------------------------------------------------------
-# need to install the specific version of hector being used....
-# after updates might need to change from @gcam-integrationv3 to the
-# ‘3.1.1’ release
+# need to install the specific version of hector being use.
 remotes::install_github("jgcri/hector@v3.2.0")
 library(hector)
 version <- packageVersion("hector")
@@ -17,6 +15,12 @@ library(tidyr)
 
 
 # 1. Run Hector ----------------------------------------------------------------
+# Parse out all of the RF variables from the function table so make it easy to
+# get all the RF values with a fetchvars call.
+hector::fxntable %>%
+    filter(grepl(x = fxn, pattern = "RF_")) %>%
+    pull(string) ->
+    rf_vars
 
 # Run Hector & fetch results of interest
 # Args
@@ -26,7 +30,7 @@ my_run_hector <- function(ini){
     scn_name <- gsub(pattern = "hector_|.ini", x = basename(ini), replacement = "")
     hc <- newcore(inifile = ini, name = scn_name)
     run(hc)
-    vars <- c(GLOBAL_TAS(), GMST(), RF_BC(), RF_NH3(), RF_ACI(), RF_OC(), RF_SO2(),
+    vars <- c(GLOBAL_TAS(), GMST(), rf_vars,
               CONCENTRATIONS_CH4(), CONCENTRATIONS_CO2())
     out <- fetchvars(hc, dates = 1950:2300, vars = vars)
     return(out)
